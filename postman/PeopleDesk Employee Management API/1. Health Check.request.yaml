@@ -1,0 +1,20 @@
+$kind: http-request
+description: Verifies that the server is alive and reports MongoDB database connection status.
+url: "{{baseUrl}}/health"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200 or 503', function () {
+          pm.expect([200, 503]).to.include(pm.response.code);
+      });
+
+      pm.test('Response contains success and database status', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('status');
+          pm.expect(jsonData).to.have.property('database');
+      });
+    language: text/javascript
+order: 1000

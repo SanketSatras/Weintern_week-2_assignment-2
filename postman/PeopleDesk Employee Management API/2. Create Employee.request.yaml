@@ -1,0 +1,35 @@
+$kind: http-request
+description: Creates a new employee record and automatically saves the resulting ObjectId to collection variable 'employeeId'.
+url: "{{baseUrl}}/employees"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Aarav Sharma",
+      "department": "IT",
+      "role": "Senior Full Stack Engineer",
+      "salary": 145000,
+      "joinDate": "2023-01-15"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 201 Created', function () {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test('Returns created employee with valid _id', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.success).to.be.true;
+          pm.expect(jsonData.data).to.have.property('_id');
+          pm.expect(jsonData.data.name).to.eql('Aarav Sharma');
+          
+          // Automatically store created employee ID for subsequent requests
+          pm.collectionVariables.set('employeeId', jsonData.data._id);
+      });
+    language: text/javascript
+order: 2000

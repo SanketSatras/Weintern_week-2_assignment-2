@@ -1,0 +1,7 @@
+$kind: collection
+description: |-
+  Production-grade RESTful API collection for PeopleDesk Employee Management System.
+  Features end-to-end CRUD workflow, input validation, search, sorting, and error handling tests.
+variables:
+  baseUrl: http://localhost:5000/api
+  employeeId: ""

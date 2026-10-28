@@ -1,0 +1,24 @@
+$kind: http-request
+description: Sorts employees using allowlisted database fields (salary, name, department, role, joinDate, createdAt).
+url: "{{baseUrl}}/employees?sortBy=salary&order=desc"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  sortBy: salary
+  order: desc
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200 OK', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Results are sorted in descending order', function () {
+          var jsonData = pm.response.json();
+          if (jsonData.data.length >= 2) {
+              pm.expect(jsonData.data[0].salary).to.be.at.least(jsonData.data[1].salary);
+          }
+      });
+    language: text/javascript
+order: 5000

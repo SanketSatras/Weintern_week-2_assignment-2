@@ -1,0 +1,32 @@
+$kind: http-request
+description: Updates an existing employee record without creating duplicates.
+url: "{{baseUrl}}/employees/{{employeeId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Aarav Sharma",
+      "department": "IT",
+      "role": "Principal Lead Architect",
+      "salary": 195000,
+      "joinDate": "2023-01-15"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200 OK', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Employee role and salary are updated correctly', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.success).to.be.true;
+          pm.expect(jsonData.data.role).to.eql('Principal Lead Architect');
+          pm.expect(jsonData.data.salary).to.eql(195000);
+      });
+    language: text/javascript
+order: 7000

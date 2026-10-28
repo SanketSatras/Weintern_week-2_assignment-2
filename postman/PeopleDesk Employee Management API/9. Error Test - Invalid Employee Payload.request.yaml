@@ -1,0 +1,31 @@
+$kind: http-request
+description: Tests rejection of invalid department, empty strings, negative salary, and future join date.
+url: "{{baseUrl}}/employees"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "",
+      "department": "InvalidDepartment",
+      "role": "",
+      "salary": -5000,
+      "joinDate": "2099-01-01"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 400 Bad Request', function () {
+          pm.response.to.have.status(400);
+      });
+
+      pm.test('Response returns structured field errors', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.success).to.be.false;
+          pm.expect(jsonData).to.have.property('errors');
+      });
+    language: text/javascript
+order: 9000

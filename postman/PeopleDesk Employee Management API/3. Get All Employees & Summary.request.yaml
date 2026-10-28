@@ -1,0 +1,23 @@
+$kind: http-request
+description: Retrieves all employee records along with dashboard summary metrics (totalEmployees, totalPayroll, departmentCount).
+url: "{{baseUrl}}/employees"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200 OK', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Returns employees list and summary statistics', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.success).to.be.true;
+          pm.expect(jsonData.data).to.be.an('array');
+          pm.expect(jsonData.summary).to.have.property('totalEmployees');
+          pm.expect(jsonData.summary).to.have.property('totalPayroll');
+          pm.expect(jsonData.summary).to.have.property('departmentCount');
+      });
+    language: text/javascript
+order: 3000

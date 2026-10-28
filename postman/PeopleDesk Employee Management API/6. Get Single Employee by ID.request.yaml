@@ -1,0 +1,20 @@
+$kind: http-request
+description: Retrieves details of a single employee by their MongoDB ObjectId.
+url: "{{baseUrl}}/employees/{{employeeId}}"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 200 OK', function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test('Employee ID matches requested ID', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.success).to.be.true;
+          pm.expect(jsonData.data._id).to.eql(pm.collectionVariables.get('employeeId'));
+      });
+    language: text/javascript
+order: 6000

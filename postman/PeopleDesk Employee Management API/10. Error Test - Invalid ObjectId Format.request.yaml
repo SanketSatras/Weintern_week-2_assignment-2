@@ -1,0 +1,20 @@
+$kind: http-request
+description: Tests validation layer rejection of malformed MongoDB ObjectId parameters.
+url: "{{baseUrl}}/employees/invalid-object-id-12345"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 400 Bad Request', function () {
+          pm.response.to.have.status(400);
+      });
+
+      pm.test('Returns invalid ObjectId format error', function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.success).to.be.false;
+          pm.expect(jsonData.errors.id).to.include('Invalid ObjectId');
+      });
+    language: text/javascript
+order: 10000
