@@ -1,7 +1,7 @@
 # PeopleDesk — Enterprise Employee Management System
 
 > **Week-2 Assignment - 2 Submission**  
-> **Author**: Rohit Satras  
+> **Author**: Sanket  
 > **Repository**: Full-Stack CRUD Employee Management System (MERN Stack)
 
 [![Node.js Version](https://img.shields.io/badge/Node.js-v18+-339933?logo=node.js)](https://nodejs.org)
@@ -474,6 +474,6 @@ git push -u origin main
 ---
 
 ## 👤 Author
-- **Developer**: Rohit Satras
+- **Developer**: Sanket Satras
 - **Assignment**: Week-2 Assignment 2 — Full-Stack CRUD Employee Management System
 - **Year**: 2026
